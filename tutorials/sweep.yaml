@@ -1,0 +1,29 @@
+program: Annotation_peeling_test.py
+project: scgpt
+name: sweephuman
+
+method: grid
+
+metric:
+  name: valid/accuracy
+  goal: maximize
+
+parameters:
+  n_bins:
+    values: [50, 100, 300, 1000]
+
+
+  max_seq_len:
+    values: [50, 200, 3000]
+
+  epochs:
+    values: [10, 30,100]
+
+  # 嵌入组合方式 (total_embs)
+  total_embs:
+    values: ["src", "values", "both"] # 明确列出所有可能的字符串值
+
+command:
+  - python
+  - Annotation_peeling_test.py
+  - ${args}

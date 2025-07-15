@@ -53,6 +53,8 @@ class TransformerModel(nn.Module):
         use_fast_transformer: bool = False,
         fast_transformer_backend: str = "flash",
         pre_norm: bool = False,
+        values_choose:int = 1,
+        src_choose:int =1,
     ):
         super().__init__()
         self.model_type = "Transformer"
@@ -65,6 +67,8 @@ class TransformerModel(nn.Module):
         self.cell_emb_style = cell_emb_style
         self.explicit_zero_prob = explicit_zero_prob
         self.norm_scheme = "pre" if pre_norm else "post"
+        self.values_choose = values_choose
+        self.src_choose = src_choose
         if self.input_emb_style not in ["category", "continuous", "scaling"]:
             raise ValueError(
                 f"input_emb_style should be one of category, continuous, scaling, "
@@ -179,9 +183,9 @@ class TransformerModel(nn.Module):
         values = self.value_encoder(values)  # (batch, seq_len, embsize)
         if self.input_emb_style == "scaling":
             values = values.unsqueeze(2)
-            total_embs = src * values
+            total_embs = src * self.src_choose * values * self.values_choose
         else:
-            total_embs = src + values
+            total_embs = src * self.src_choose + values * self.values_choose
 
         if getattr(self, "dsbn", None) is not None:
             batch_label = int(batch_labels[0].item())
@@ -269,11 +273,11 @@ class TransformerModel(nn.Module):
             values = self.value_encoder(values)  # (batch, seq_len, embsize)
             if self.input_emb_style == "scaling":
                 values = values.unsqueeze(2)
-                total_embs = src * values
+                total_embs = src * self.src_choose * values * self.values_choose
             else:
-                total_embs = src + values
+                total_embs = src * self.src_choose + values * self.values_choose
         else:
-            total_embs = src
+            total_embs = src* self.src_choose
 
         if getattr(self, "dsbn", None) is not None:
             batch_label = int(batch_labels[0].item())
