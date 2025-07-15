@@ -1,4 +1,4 @@
-# scGPT-剥离实验
+# scGPT-peeling test
 针对输⼊表征的消融研究，修改model中的 total_embs = value，
 以确定基因⾝份（src）与基因表达⽔平（values）对细胞类型分类任务的相对贡献。
 并且进行了关键超参数的系统性灵敏度分析
