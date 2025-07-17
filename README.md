@@ -84,4 +84,9 @@ wandb sweep sweep_config.yaml
 ```bash
 python Annotation_peeling_test.py --n_bins 51 --max_seq_len 3001 --epochs 10 --total_embs both
 ```
+### 5.新增使用Lighting封装程序
+新增使用Lighting封装的程序：'Annotation_peeling_lighting.py'，模块化模型：
+```bash
+python Annotation_peeling_lighting.py
+```
 
